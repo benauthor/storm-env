@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# export CLASSPATH=/kafka/libs/*
+# export CLASSPATH=/kafka/libs/* && ./hlconsumer.py test
 
 # bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 4 --topic test
 
@@ -32,19 +32,29 @@ def create_consumer_config(a_zookeeper, a_group_id):
 def create_consumer(config):
     return Consumer.createJavaConsumerConnector(config)
 
+
 if __name__ == "__main__":
 
     topic = sys.argv[1]
     config = create_consumer_config("localhost:2181", "test-group")
     consumer = create_consumer(config)
 
+    # simple topic map: a single stream for the topic
     topics_map = HashMap()
     topics_map.put(topic, Integer(1))
 
+    # get my single stream out of the consumer
     consumer_map = consumer.createMessageStreams(topics_map)
     streams = consumer_map.get(topic)
-    stream = streams.get(0)  # just going simple to start
+    stream = streams.get(0)
     it = stream.iterator()
 
     while it.hasNext():
-        print it.next().message().tostring()
+        msg = it.next()
+        mt = msg.topic()
+        mp = msg.partition()
+
+        print "{}:{}:{} {}".format(msg.topic(),
+                                   msg.partition(),
+                                   msg.offset(),
+                                   msg.message().tostring())
