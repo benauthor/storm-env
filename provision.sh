@@ -8,14 +8,12 @@ fi
 
 apt-get update
 
-
 # basics
 apt-get -y install build-essential git unzip make
 
 # python stuff
 apt-get install -y python-dev python-virtualenv python-pip
-pip install --upgrade pip wheel setuptools
-
+pip install --upgrade pip wheel setuptools ipython ipdb
 
 # Oracle Java 7
 apt-get -y install python-software-properties
@@ -51,5 +49,5 @@ rm -rf /etc/supervisor/conf.d
 ln -s /vagrant/supervisor /etc/supervisor/conf.d
 supervisorctl reload
 
-# streamparse
-pip install streamparse
+# python packages
+pip install -r requirements.txt
