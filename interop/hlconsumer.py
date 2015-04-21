@@ -51,8 +51,6 @@ if __name__ == "__main__":
 
     while it.hasNext():
         msg = it.next()
-        mt = msg.topic()
-        mp = msg.partition()
 
         print "{}:{}:{} {}".format(msg.topic(),
                                    msg.partition(),
