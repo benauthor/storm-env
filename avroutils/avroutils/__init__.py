@@ -1,14 +1,12 @@
 from avroutils import (
-    bulk_deserialize,
-    bulk_serialize,
     deserialize,
     serialize,
+    serialize_one,
 )
 
 
 __all__ = [
-    'bulk_deserialize',
-    'bulk_serialize',
     'serialize',
     'deserialize',
+    'serialize_one',
 ]
