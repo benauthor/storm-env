@@ -1,37 +1,26 @@
 import io
-import avro.schema
+import avro.datafile
 import avro.io
+import avro.schema
 
 
-def serialize(data_structure, schema):
-    writer = avro.io.DatumWriter(writers_schema=schema)
+def serialize(data, schema):
+    datum_writer = avro.io.DatumWriter(writers_schema=schema)
     out = io.BytesIO()
-    writer.write(data_structure, avro.io.BinaryEncoder(out))
+    writer = avro.datafile.DataFileWriter(out, datum_writer, schema)
+    for datum in data:
+        writer.append(datum)
+    writer.flush()
     return out.getvalue()
 
 
-def bulk_serialize(data_structures, schema):
-    writer = avro.io.DatumWriter(writers_schema=schema)
-    out = io.BytesIO()
-    encoder = avro.io.BinaryEncoder(out)
-    for data_structure in data_structures:
-        writer.write(data_structure, encoder)
-    return out.getvalue()
+def serialize_one(datum, schema):
+    return serialize([datum], schema)
 
 
-def deserialize(as_bytes, schema):
-    bytes_reader = io.BytesIO(as_bytes)
-    decoder = avro.io.BinaryDecoder(bytes_reader)
-    reader = avro.io.DatumReader(writers_schema=schema)
-    return reader.read(decoder)
-
-
-def bulk_deserialize(as_bytes, schema):
-    bytes_reader = io.BytesIO(as_bytes)
-    decoder = avro.io.BinaryDecoder(bytes_reader)
-    reader = avro.io.DatumReader(writers_schema=schema)
-    while True:
-        try:
-            yield reader.read(decoder)
-        except TypeError:
-            raise StopIteration
+def deserialize(as_bytes):
+    bytes_in = io.BytesIO(as_bytes)
+    datum_reader = avro.io.DatumReader()
+    reader = avro.datafile.DataFileReader(bytes_in, datum_reader)
+    for datum in reader:
+        yield datum
