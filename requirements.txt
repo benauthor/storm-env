@@ -1,3 +1,4 @@
 kafka-python
 pyjnius
 streamparse
+-e git+git://github.com/Parsely/pykafka.git#egg=pykafka
