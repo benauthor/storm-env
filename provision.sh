@@ -32,9 +32,9 @@ mv /zookeeper-3.4.6 /zookeeper
 chown -R vagrant /zookeeper
 
 # kafka
-wget http://mirrors.advancedhosters.com/apache/kafka/0.8.2.1/kafka_2.11-0.8.2.1.tgz -O /kafka.tar.gz
+wget http://mirrors.advancedhosters.com/apache/kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz -O /kafka.tar.gz
 tar -xzf /kafka.tar.gz -C/
-mv /kafka_2.11-0.8.2.1 /kafka
+mv /kafka_2.11-0.9.0.0 /kafka
 chown -R vagrant /kafka
 
 # leiningen
