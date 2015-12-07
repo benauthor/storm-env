@@ -37,6 +37,16 @@ tar -xzf /kafka.tar.gz -C/
 mv /kafka_2.11-0.9.0.0 /kafka
 chown -R vagrant /kafka
 
+# librdkafka
+apt-get install zlib1g-dev libffi-dev
+git clone https://github.com/edenhill/librdkafka.git /opt/librdkafka
+chown -R vagrant /opt/librdkafka
+cd /opt/librdkafka
+./configure
+make
+sudo make install
+# export LD_LIBRARY_PATH=/usr/local/lib
+
 # leiningen
 wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein -O /usr/local/bin/lein
 chmod +x /usr/local/bin/lein
@@ -50,4 +60,4 @@ ln -s /vagrant/supervisor /etc/supervisor/conf.d
 supervisorctl reload
 
 # python packages
-pip install -r requirements.txt
+pip install -r /vagrant/requirements.txt
